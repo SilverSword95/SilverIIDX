@@ -21,6 +21,7 @@ Features:
 Additional features:
 * NFC reader support (based on PN532) - hold **4th** button to turn off (with RGB)
 * PlayStation mode (supports all PS1 and PS2 games and LED, auto-switch)
+* Bluetooth support (based on ESP32, for IIDX ULTIMATE MOBILE)
 * Lunatic Rave 2 mode (turntable buttons) - hold **6th** button to turn on
 * Update mode - hold **7th** button to enter update mode
 * Customizable through board_defs.h
@@ -29,6 +30,8 @@ Thanks to:
 * [Pico-Game-Controller](https://github.com/speedypotato/Pico-Game-Controller) by speedypotato
 * [aic_pico](https://github.com/whowechina/aic_pico) by whowechina
 * [DS4toPS2](https://github.com/TonyMacDonald1995/DS4toPS2) by TonyMacDonald1995
+* [Esp32EntryModel](https://github.com/987123879113/Esp32EntryModel) by 987123879113
+* ChatGPT for helping in linking boards through UART
 * Everyone in the Cons & Stuff Discord for providing near instant support to questions
 * https://github.com/hathach/tinyusb/tree/master/examples/device/hid_composite
 * https://github.com/mdxtinkernick/pico_encoders for encoders which performed better than both interrupts and polling
