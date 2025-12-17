@@ -24,6 +24,11 @@
 #define I2C_SDA 4
 #define I2C_FREQ 733*1000
 
+//ESP32 Link (Bluetooth support)
+#define ESPLINK_EN //If you don't need that, just comment that and next two lines
+#define ESPLINK_TX 0
+#define ESPLINK_RX 1
+
 //Check psxSPI.pio for PlayStation mode pins and tusb_config.h for NFC module enable
 
 #ifdef PICO_GAME_CONTROLLER_C
@@ -33,7 +38,7 @@ const uint8_t SW_KEYCODE[] = {HID_KEY_Z, HID_KEY_S, HID_KEY_X, HID_KEY_D,
                               HID_KEY_C, HID_KEY_F, HID_KEY_V, HID_KEY_G,
                               HID_KEY_ENTER, HID_KEY_TAB};
 const uint8_t SW_GPIO[] = {
-    6, 7, 8, 9, 10, 11, 12, 2, 15, 14, 0, 1,
+    6, 7, 8, 9, 10, 11, 12, 2, 15, 14, 2, 3,
 };
 const uint8_t LED_GPIO[] = {
     21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21, 21,

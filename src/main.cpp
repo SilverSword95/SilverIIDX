@@ -191,6 +191,40 @@ void wait_loop()
 }
 
 /**
+ * ESP32 Link Part
+ **/
+
+#ifdef ESPLINK_EN
+uint8_t esp_packet[4];
+const uint8_t START_BYTE = 0xAA;
+
+static void esplink_init()
+{
+	gpio_init(ESPLINK_TX);
+    gpio_init(ESPLINK_RX);
+	gpio_pull_up(ESPLINK_RX);    // for more stability
+	gpio_disable_pulls(ESPLINK_TX);
+	uart_init(uart0, 115200);
+	gpio_set_function(ESPLINK_TX, GPIO_FUNC_UART);
+    gpio_set_function(ESPLINK_RX, GPIO_FUNC_UART);
+	uart_set_format(uart0, 8, 1, UART_PARITY_NONE);
+	uart_set_fifo_enabled(uart0, true);
+	uart_set_hw_flow(uart0, false, false);
+}
+
+static void esplink_update()
+{
+	uint8_t btn_low7  = report.buttons & 0x7F;        // buttons 0–6
+	uint8_t btn_high7 = (report.buttons >> 7) & 0x7F; // buttons 7–13
+	esp_packet[0] = START_BYTE;
+	esp_packet[1] = report.joy0;
+	esp_packet[2] = btn_low7;
+	esp_packet[3] = btn_high7;
+	uart_write_blocking(uart0, esp_packet, 4);
+}
+#endif
+
+/**
  * Gamepad Mode
  **/
 void joy_mode() {
@@ -227,6 +261,10 @@ void joy_mode() {
 	report.buttons |= (uint16_t)tt1_but << 10;
 	report.buttons |= (uint16_t)tt2_but << 11;
 	}
+	
+#ifdef ESPLINK_EN
+	esplink_update();
+#endif
 
     if (tud_hid_ready()) { tud_hid_n_report(0x00, REPORT_ID_JOYSTICK, &report, sizeof(report)); }
 }
@@ -372,6 +410,9 @@ void init() {
   } else {
     loop_mode = &joy_mode;
     joy_mode_check = true;
+#ifdef ESPLINK_EN
+	esplink_init();
+#endif
   }
 
   // RGB Mode Switching
